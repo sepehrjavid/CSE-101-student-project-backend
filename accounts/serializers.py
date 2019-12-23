@@ -52,6 +52,8 @@ class UserLoginSerializer(serializers.ModelSerializer):
             "password"
         ]
 
+        read_only_fields = ("password",)
+
     def create(self, validated_data):
         user = User.objects.create(username=validated_data.pop("username"))
         user.set_password(validated_data.pop("password"))
