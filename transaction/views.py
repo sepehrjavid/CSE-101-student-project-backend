@@ -1,4 +1,5 @@
 from rest_framework.generics import ListCreateAPIView
+from rest_framework.permissions import IsAuthenticated
 
 from transaction.models import Transaction
 from transaction.serializers import TransactionSerializer
@@ -7,6 +8,7 @@ from transaction.serializers import TransactionSerializer
 class TransactionListCreateView(ListCreateAPIView):
     serializer_class = TransactionSerializer
     queryset = Transaction.objects.all()
+    permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
         instance = serializer.save()

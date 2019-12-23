@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.generics import ListCreateAPIView, CreateAPIView, RetrieveAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -13,21 +14,25 @@ from accounts.serializers import BankAccountSerializer, UserLoginSerializer, Ban
 class BankAccountListCreateView(ListCreateAPIView):
     serializer_class = BankAccountSerializer
     queryset = BankAccount.objects.all()
+    permission_classes = [IsAuthenticated]
 
 
 class BankAccountRetrieveView(RetrieveAPIView):
     serializer_class = BankAccountSerializer
     queryset = BankAccount.objects.all()
+    permission_classes = [IsAuthenticated]
     lookup_field = "accountNumber"
 
 
 class SignUpView(CreateAPIView):
     serializer_class = UserLoginSerializer
     queryset = User.objects.all()
+    permission_classes = [IsAuthenticated]
 
 
 class GetBankAccountLogsView(APIView):
     serializer_class = BankAccountNumberSerializer
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         ser = BankAccountNumberSerializer(data=request.data)
@@ -40,6 +45,7 @@ class GetBankAccountLogsView(APIView):
 
 class AddAccountToAccountOwnerView(APIView):
     serializer_class = AddAccountToAccountOwnerSerializer
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         ser = AddAccountToAccountOwnerSerializer(data=request.data)
@@ -55,11 +61,13 @@ class AddAccountToAccountOwnerView(APIView):
 class GetAccountOwnerDataView(RetrieveAPIView):
     serializer_class = AccountOwnerSerializer
     queryset = AccountOwner.objects.all()
+    permission_classes = [IsAuthenticated]
     lookup_field = "nationalCode"
 
 
 class CloseAccountView(APIView):
     serializer_class = BankAccountNumberSerializer
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         ser = BankAccountNumberSerializer(data=request.data)
@@ -74,6 +82,7 @@ class CloseAccountView(APIView):
 
 class BlockAccountView(APIView):
     serializer_class = BankAccountNumberSerializer
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         ser = BankAccountNumberSerializer(data=request.data)

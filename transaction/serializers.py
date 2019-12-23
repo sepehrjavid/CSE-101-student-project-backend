@@ -45,8 +45,11 @@ class TransactionSerializer(serializers.ModelSerializer):
             if attrs.get("fromAccount") is None or attrs.get("toAccount") is None:
                 raise ValidationError("Invalid value for cash")
         fromAccount = attrs.get("fromAccount")
+        toAccount = attrs.get("toAccount")
         if fromAccount is not None and fromAccount.credit - attrs.get("amount") < 0:
             raise ValidationError("not enough credit")
+        if fromAccount is not None and toAccount is not None and fromAccount.accountNumber == toAccount.accountNumber:
+            raise ValidationError("account numbers are the same")
         return attrs
 
     def validate_fromAccount(self, attr):
