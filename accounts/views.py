@@ -38,7 +38,11 @@ class GetBankAccountLogsView(APIView):
         ser = BankAccountNumberSerializer(data=request.data)
         if ser.is_valid():
             account = get_object_or_404(BankAccount, accountNumber=ser.validated_data.get("accountNumber"))
-            return Response(AccountLogSerializer(account.logs, many=True).data, status=status.HTTP_200_OK)
+            output = {
+                "currentCredit": account.credit,
+                "logs": AccountLogSerializer(account.logs, many=True).data,
+            }
+            return Response(output, status=status.HTTP_200_OK)
         else:
             return Response(ser.errors, status=status.HTTP_400_BAD_REQUEST)
 

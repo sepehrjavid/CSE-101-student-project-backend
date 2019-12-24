@@ -14,5 +14,4 @@ urlpatterns = [
     path("BlockAccount", BlockAccountView.as_view()),
     re_path(r"^BankAccountRetrieve/(?P<accountNumber>\d+)$", BankAccountRetrieveView.as_view()),
     re_path(r"^AccountOwnerRetrieve/(?P<nationalCode>\d+)$", GetAccountOwnerDataView.as_view()),
-
 ]
